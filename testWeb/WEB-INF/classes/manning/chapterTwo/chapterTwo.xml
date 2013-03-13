@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+		<!--
+				The package element provides a mechanism by which to group related
+				Struts 2 components, such as actions and results, into logical units.  
+				In this case, we will group them based upon their relationship as 
+				that pertain to the same chapter in the book.  A more natural grouping
+				for real world applications would be by more functional aspects. 
+		-->
+    <package name="chapterTwo" namespace="/chapterTwo" extends="struts-default">
+
+				<!-- 
+						This is just the jsp page that presents the initial form to collect
+						the users name for building a customized greeting.
+							
+						A pass through action mapping, used to wire a direct JSP request
+						throught he Struts 2 system.  This is recommended as a best practice
+						for a variety of reasons including architectural consistency and 
+						a logical naming buffer between the request namespace and the 
+						actual jsp locations. 
+				--> 
+				<action name="Name">
+           			<result>/chapterTwo/NameCollector.jsp</result>
+				</action>	
+
+
+				<!-- 
+						The HelloWorld action will create a custom greeting from
+						the submitted form data.  The HelloWorld action also declares
+						a result to use for displaying the customized greeting, a jsp
+						page in this case.
+						
+				-->
+				<action name="HelloWorld" class="manning.chapterTwo.HelloWorld">
+					<result name="SUCCESS">/chapterTwo/HelloWorld.jsp</result>
+    		</action>
+				
+     </package>
+
+</struts>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	
+    <display-name>S2 HelloWorld (XML Based)</display-name>
+
+		<!-- Declaration of the Struts 2 filter.  Since our entire web application will be a Struts 2
+					application, we will not have any other servlets or filters.  Of course, real Struts 2 
+					applications may also have other servlets or filters, but since we are doing only Struts 2
+					stuff in this example, we need only define the Struts 2 filter.  -->
+					 
+    <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+   </filter>
+    
+   <!-- The Struts 2 filter should be mapped to ALL requests coming into the web application.  As a filter,
+				 it can let the non-struts requests pass through and they will arrive at which ever servlets to which
+				 they may be mapped.  Of course, this sample app has no other servlets, so we expect the filter to catch 
+				 everything.  When the filter recognizes a Struts 2 request, typically by the .action extension, the 
+				 normal filter chaining of a web application is aborted and the request is completely handled by
+				 the Struts 2 system. -->
+				 
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+        
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+ 
+
+
+
+  
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>servlet.HelloServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/servlet/HelloServlet</url-pattern>
+  </servlet-mapping>	
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
