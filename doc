@@ -1,0 +1,23 @@
+项目用的是struts2，在这儿我写一下struts2的基本用法。
+添加好几个必要的库之后，还要在src目录下边添加struts.xml,这是项目的必需内容。先简要介绍一下项目部署在容器里头之后，用户在
+浏览器上输入一个url，浏览器会向服务器发出http请求，请求到对应的服务器。然后服务器进行相应的返回。比如我刚写的一个测试程序。
+用户在浏览器上输入http://localhost:8080/testWeb/Menu.action，浏览器会在tomcat容器中查找testweb这个项目，然后读取web.xml
+这个文件，里头这几行配置信息
+<filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+</filter>
+
+ <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+ </filter-mapping>
+什么意思呢,我们先看  <url-pattern>/*</url-pattern>， /* 匹配所有的的url。然后这些url经过struts2过滤。具体是
+org.apache.struts2.dispatcher.FilterDispatcher这个类，其实说白了struts2是什么呢，就是一个拦截器，拦截器干嘛的，见过渔网吧
+，渔网就是网鱼的。剩下的水呢，这些东西不重要，我们就让它流走。拦截器就是抓取最重要的东西，将来我写的有关ognrul,stack等等都
+是基于拦截器的。接着读取下一个配置文件struts.xml我们前边输入url有个Menu.action.在struts.xml上找找。struts.xml有这样一条记录
+<action name="Menu">
+  			<result>/menu/Menu.jsp</result>
+</action>
+意思就是当输入的action名字叫 Menu时，就去查找文件夹 menu下的Menu.jsp。我们就可以在浏览器上看到Menu.jsp的视图了。学到这儿
+struts已经算是入门了。
