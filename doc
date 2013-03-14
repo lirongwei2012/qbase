@@ -22,3 +22,27 @@ org.apache.struts2.dispatcher.FilterDispatcher这个类，其实说白了struts2
 </action>
 意思就是当输入的action名字叫 Menu时，就去查找文件夹 menu下的Menu.jsp。我们就可以在浏览器上看到Menu.jsp的视图了。学到这儿
 struts已经算是入门了。
+
+struts2 学习1 model driven
+model driven 里边就只有一个方法 T getModel();什么意思呢，就是返回一个模型呢，我们在处理数据输入时方便了一点。一般我们这么做
+比如我今天写到的例子
+public Object getModel() {
+        	
+	return user;
+}
+这样就返回了一个对象。我们前边提到过拦截器。struts2有很多拦截器，其中有一个是params拦截器，就是拦截用户输入的数据把它们
+放到动作对象上去。就是前边返回的user.
+
+struts2 学习2 validate
+validate就是验证消息。struts2 项目一般都是继承actionSuport，并且重写其中的两个方法validate和execute。validate判断输入是否
+符合要求，这就看你有什么需求了。如果不符合要求，我们一般会这么写
+
+
+if ( ps.userExists( user.getUsername() ) ){        	
+	addFieldError("username", getText( "user.exists"));
+}
+validate方法返回值为空。如果用户名已经存在，就执行addFieldError方法。addFieldError方法会提前返回input。然后把结果交给xml
+处理
+
+struts2 学习3 execute
+execute方法一般做这几件事情，添加用户，返回一个字符串。然后将结果返回给struts.xml处理
