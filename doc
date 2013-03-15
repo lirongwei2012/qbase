@@ -46,3 +46,23 @@ validate方法返回值为空。如果用户名已经存在，就执行addFieldE
 
 struts2 学习3 execute
 execute方法一般做这几件事情，添加用户，返回一个字符串。然后将结果返回给struts.xml处理
+
+struts 学习4 拦截器
+struts2项目都会继承struts-default。这样引入了struts-default.xml
+struts-default主要是用来申明拦截器的。我们可以看看这样一段代码：
+<interceptor-stack name="basicStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*,^session\..*,^request\..*,^application\..*,^servlet(Request|Response)\..*,parameters\...*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+            </interceptor-stack>
+这段代码申明了拦截器的调用顺序。其中exception是最先调用的一个拦截器。拦截器做的工作以下这几个方面
+1：做一些预处理。
+2：调用invoke方法将控制权限转移给后续拦截器。
+3：做一些后续处理.
