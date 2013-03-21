@@ -1,0 +1,80 @@
+1. 环境搭建
+   
+   开源框架最不好用的地方就是环境搭建的问题了。首先要在src目录下新建一个hibernate.cfg.xml,这是hibernate的一个配置信息，
+直接复制就好了，然后在</session-factory>之前添加你自己项目的一个xml文件，比如我建的第一个文件<mapping resource="com/bjsxt/hibernate/Teacher.hbm.xml"/> 
+就是提示读取项目配置文件时按照这个路径去找。com/bjsxt/hibernate/Teacher.hbm.xml"。接着涉及到一些model的编写，比如编写一个
+Teacher实体类。写好类的属性,private类型，不用多少了，get，set方法。接着在Teacher.hbm.xml写好映射数据库信息。看例子。
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.bjsxt.hibernate">
+
+    <class name="com.bjsxt.hibernate.Teacher" table="TEACHER"> class路径，对应的表
+ <!--        <id name="id" column="ID"> -->  
+        <id name="id" />id就是主键的意思了
+ <!--           <generator class="native"/> -->  
+ <!--      </id>  -->  
+        <property name="name"/> 类的成员变量如果没有自己定义映射信息，hibernate会帮你自动一一对应的，比如此处name属性
+                                  就对应数据库表里头的name
+        <property name="title"/>
+    </class>
+
+</hibernate-mapping>
+
+测试一下
+package com.bjsxt.hibernate;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+//import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+
+public class TeacherTest {
+  public static void main(String[] args) {
+		Teacher t = new Teacher();
+		t.setId(3);
+		t.setName("t1");
+		t.setTitle("middle");
+		
+		Configuration cfg = new Configuration().configure("hibernate.cfg.xml"); //读取hibernate.cfg.xml文件
+		SessionFactory sf = cfg.buildSessionFactory(); //新建一个会话
+	
+		Session session =  sf.openSession(); //打开回话
+		session.beginTransaction(); // 提交事务
+		session.save(t); //保存
+		session.getTransaction().commit(); //执行事务
+		session.close(); //关闭回话
+		sf.close(); //关闭回话工厂
+	}
+}
+
+看起来比jdbc清新多了吧。我们还可以进一步解耦
+
+比如新建一个HibernateUtil类。
+
+package org.hibernate.tutorial.util;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class HibernateUtil {
+   private static final SessionFactory sessionFactory = buildSessionFactory();
+
+	    private static SessionFactory buildSessionFactory() {
+	        try {
+	            // Create the SessionFactory from hibernate.cfg.xml
+	            return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+	        }
+	        catch (Throwable ex) {
+	            // Make sure you log the exception, as it might be swallowed
+	            System.err.println("Initial SessionFactory creation failed." + ex);
+	            throw new ExceptionInInitializerError(ex);
+	        }
+	    }
+
+	    public static SessionFactory getSessionFactory() {
+	        return sessionFactory;
+	    }
+}
+在这儿运用了设计模式的工厂方法。每次只需要调用这个类就可以生成一个回话了。代码又可以大幅优化了。
